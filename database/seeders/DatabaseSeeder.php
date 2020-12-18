@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Topic;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,6 +15,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        User::factory()->times(5)->create();
+        $this->command->info('User is seeded');
+        Topic::factory()->times(10)->create();
+        $this->command->info('Topic is seeded');
     }
 }
