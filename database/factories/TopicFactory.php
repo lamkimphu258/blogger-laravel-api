@@ -23,7 +23,7 @@ class TopicFactory extends Factory
     {
         return [
             'id' => $this->faker->uuid(),
-            'title' => $this->faker->sentence(10)
+            'title' => $this->faker->sentence(10),
         ];
     }
 }

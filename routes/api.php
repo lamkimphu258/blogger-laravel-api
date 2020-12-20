@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\TopicController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,7 +21,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::group(['prefix' => 'v1'], function () {
-    Route::group(['prefix' => '/users'], function () {
-        Route::post('/', [RegisterController::class, 'store']);
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('login', [AuthController::class, 'login']);
+
+    Route::group(['prefix' => '/topics'], function () {
+        Route::post('/', [TopicController::class, 'store'])->middleware('auth:api');
     });
 });

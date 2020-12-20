@@ -15,9 +15,5 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        User::factory()->times(5)->create();
-        $this->command->info('User is seeded');
-        Topic::factory()->times(10)->create();
-        $this->command->info('Topic is seeded');
     }
 }
