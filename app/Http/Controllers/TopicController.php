@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTopicRequest;
+use App\Http\Resources\TopicResource;
 use App\Models\Topic;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class TopicController extends Controller
@@ -18,5 +18,11 @@ class TopicController extends Controller
         $topic->save();
 
         return response(null, 204);
+    }
+
+    public function index()
+    {
+        $topics = Topic::all();
+        return TopicResource::collection($topics);
     }
 }

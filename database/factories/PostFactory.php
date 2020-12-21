@@ -25,7 +25,7 @@ class PostFactory extends Factory
             'id' => $this->faker->uuid(),
             'body' => $this->faker->sentence(),
             'user_id' => $this->faker->uuid(),
-            'post_id' => $this->faker->uuid()
+            'topic_id' => $this->faker->uuid()
         ];
     }
 }
