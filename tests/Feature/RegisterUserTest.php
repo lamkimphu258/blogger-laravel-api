@@ -2,14 +2,11 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class RegisterTest extends TestCase
+class RegisterUserTest extends TestCase
 {
-    use RefreshDatabase;
-
-    private $route = '/api/v1/users';
+    private $route = '/api/v1/register';
 
     private $emailErrorStructure = [
         'message',
@@ -32,22 +29,7 @@ class RegisterTest extends TestCase
         ]
     ];
 
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function testRegisterSuccess()
-    {
-        $response = $this->json('POST', $this->route, [
-            'email' => 'johndoe@email.com',
-            'password' => 'password'
-        ]);
-
-        $response->assertStatus(204);
-    }
-
-    public function testRegisterWithEmptyEmail()
+    public function test_it_checks_empty_email()
     {
         $response = $this->json('POST', $this->route, [
             'email' => '',
@@ -57,7 +39,7 @@ class RegisterTest extends TestCase
         $response->assertStatus(422);
     }
 
-    public function testRegisterWithInvalidEmail()
+    public function test_it_checks_invalid_email()
     {
         $response = $this->json('POST', $this->route, [
             'email' => 'johndoeemail.com'
@@ -67,7 +49,7 @@ class RegisterTest extends TestCase
         $response->assertStatus(422);
     }
 
-    public function testResgiterWithExistedEmail()
+    public function test_it_checks_existed_email()
     {
         $this->json('POST', $this->route, [
             'email' => 'johndoe@email.com',
@@ -82,7 +64,7 @@ class RegisterTest extends TestCase
         $response->assertStatus(422);
     }
 
-    public function testRegisterWithEmptyPassword()
+    public function test_it_checks_empty_password()
     {
         $response = $this->json('POST', $this->route, [
             'password' => ''
@@ -92,7 +74,7 @@ class RegisterTest extends TestCase
         $response->assertStatus(422);
     }
 
-    public function testRegisterWithPasswordLengthLowerThanSix()
+    public function test_it_checks_password_length_lower_than_6()
     {
         $response = $this->json('POST', $this->route, [
             'password' => 'pass'
@@ -102,7 +84,8 @@ class RegisterTest extends TestCase
         $response->assertStatus(422);
     }
 
-    public function testRegisterWithInvalidEmailAndPassword() {
+    public function test_it_checks_invalid_email_and_password()
+    {
         $response = $this->json('POST', $this->route, [
             'email' => 'johndoeemail.com',
             'password' => 'pass'
@@ -110,5 +93,15 @@ class RegisterTest extends TestCase
 
         $response->assertJsonStructure($this->emailPasswordErrorStructure);
         $response->assertStatus(422);
+    }
+
+    public function test_it_registers_successfully()
+    {
+        $response = $this->json('POST', $this->route, [
+            'email' => 'johndoe@email.com',
+            'password' => 'password'
+        ]);
+
+        $response->assertStatus(204);
     }
 }
