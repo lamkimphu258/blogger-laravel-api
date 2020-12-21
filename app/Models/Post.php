@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Topic extends Model
+class Post extends Model
 {
     use HasFactory;
 
@@ -13,15 +13,15 @@ class Topic extends Model
 
     protected $keyType = 'string';
 
-    protected $fillable = ['title'];
+    protected $fillable = ['id', 'body'];
+
+    public function topic()
+    {
+        return $this->belongsTo(Topic::class);
+    }
 
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function posts()
-    {
-        return $this->hasMany(Post::class);
     }
 }
