@@ -165,4 +165,39 @@ class TopicTest extends TestCase
         $response->assertJsonStructure($this->topicErrorStructure);
         $response->assertStatus(422);
     }
+
+    public function test_it_checks_authorize_before_update_title() {
+        $randomUser = User::factory()->create();
+        $response = $this->actingAs($randomUser, 'api')->patchJson($this->routeWithSpecificTopicId, [
+            'title' => 'This is new title'
+        ]);
+
+        $response->assertStatus(403);
+    }
+
+    public function test_authenticated_and_authorized_user_can_update_a_title() {
+        $response = $this->actingAs($this->user, 'api')->patchJson($this->routeWithSpecificTopicId, [
+            'title' => 'This is new title'
+        ]);
+
+        $response->assertJsonStructure([
+            'data' => [
+                'id',
+                'title',
+                'created_at',
+                'posts' => [
+                    '*' => [
+                        'id',
+                        'body'
+                    ]
+                ],
+                'user' => [
+                    'id',
+                    'name',
+                    'email'
+                ]
+            ]
+        ]);
+        $response->assertStatus(200);
+    }
 }

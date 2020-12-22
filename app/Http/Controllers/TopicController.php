@@ -39,6 +39,12 @@ class TopicController extends Controller
 
     public function update(UpdateTopicRequest $request, $topicId)
     {
+        $topic = Topic::find($topicId);
+        $this->authorize('update', $topic);
 
+        $topic->title = $request->get('title', $topic->title);
+        $topic->save();
+
+        return new TopicResource($topic);
     }
 }
