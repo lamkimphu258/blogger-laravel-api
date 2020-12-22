@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Models\Post;
+use App\Models\Topic;
 use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
@@ -20,11 +22,17 @@ class TopicTest extends TestCase
 
     private $user;
 
+    private $topic;
+
+    private $post;
+
     public function setUp(): void
     {
         parent::setUp();
 
         $this->user = User::factory()->create();
+        $this->topic = Topic::factory()->create(['user_id' => $this->user->id]);
+        $this->post = Post::factory()->times(5)->create(['topic_id' => $this->topic->id]);
 
         Artisan::call('db:seed');
     }
@@ -92,6 +100,31 @@ class TopicTest extends TestCase
             ]
         ]);
 
+        $response->assertStatus(200);
+    }
+
+    public function test_it_return_topic_with_specific_id()
+    {
+        $response = $this->getJson($this->route.'/'.$this->topic->id);
+
+        $response->assertJsonStructure([
+            'data' => [
+                'id',
+                'title',
+                'created_at',
+                'posts' => [
+                    '*' => [
+                        'id',
+                        'body'
+                    ]
+                ],
+                'user' => [
+                    'id',
+                    'name',
+                    'email'
+                ]
+            ]
+        ]);
         $response->assertStatus(200);
     }
 }
