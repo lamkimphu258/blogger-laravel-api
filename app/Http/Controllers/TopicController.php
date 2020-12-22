@@ -39,5 +39,6 @@ class TopicController extends Controller
 
     public function update(UpdateTopicRequest $request, $topicId)
     {
+
     }
 }

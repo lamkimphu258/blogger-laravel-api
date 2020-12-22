@@ -27,7 +27,7 @@ Route::prefix('v1')->group(function () {
         Route::post('/', [TopicController::class, 'store'])->middleware('auth:api');
         Route::get('/', [TopicController::class, 'index']);
         Route::get('/{topicId}', [TopicController::class, 'show']);
-        Route::patch('/{topicId}', [TopicController::class, 'update']);
+        Route::patch('/{topicId}', [TopicController::class, 'update'])->middleware('auth:api');
 
         Route::prefix('{topicId}/posts')->group(function () {
             Route::post('/', [PostController::class, 'store'])->middleware('auth:api');
