@@ -127,4 +127,11 @@ class TopicTest extends TestCase
         ]);
         $response->assertStatus(200);
     }
+
+    public function test_it_checks_non_existence_topic_id()
+    {
+        $response = $this->getJson($this->route.'/'.Str::uuid());
+
+        $response->assertStatus(404);
+    }
 }
