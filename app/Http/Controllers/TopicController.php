@@ -25,4 +25,13 @@ class TopicController extends Controller
         $topics = Topic::all();
         return TopicResource::collection($topics);
     }
+
+    public function show($topicId) {
+        $topic = Topic::find($topicId);
+        if (!$topic) {
+            return response(null, 404);
+        }
+
+        return new TopicResource($topic);
+    }
 }
